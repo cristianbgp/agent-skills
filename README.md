@@ -29,10 +29,14 @@ skills/
     ├── SKILL.md
     └── references/
         ├── web-ui.md
+        ├── react-and-data.md
+        ├── testing.md
         └── local-development.md
 ```
 
 `SKILL.md` contains the instructions and links to the references. No `agents/openai.yaml` is included: this package does not need Codex-specific display metadata. No runtime code, package.json, build, or npm publishing is required.
+
+References are loaded by task: `web-ui.md` for UI, mobile browser behavior, and motion; `react-and-data.md` for React and API consumption; `testing.md` for verification strategy; and `local-development.md` for local tooling. All preference instructions are included in this package.
 
 ## Publication
 

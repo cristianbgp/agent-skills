@@ -26,6 +26,8 @@ Explicit project requirements take precedence. In existing projects, preserve es
 
 For UI work, read [web-ui.md](references/web-ui.md).
 
+For React components, API consumption, or server-state handling, read [react-and-data.md](references/react-and-data.md).
+
 ## APIs and contracts
 
 - Prefer Hono.
@@ -63,6 +65,8 @@ For development setup, read [local-development.md](references/local-development.
 - When correctness depends on SQL behavior, use database-backed tests. Consider PGlite when representative; use real PostgreSQL when features or behavior require it.
 - Preserve Bun's test runner in projects where it already works well.
 - Match verification to the risk of the change.
+
+When choosing or writing tests, read [testing.md](references/testing.md).
 
 ## Deployment
 
