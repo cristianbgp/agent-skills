@@ -12,7 +12,7 @@ The agreed updates to the article's baseline are:
 
 - Prefer Tailwind CSS + shadcn/ui built on **Base UI**, using Radix when the required Base UI option is unavailable or unsuitable. Preserve existing projects' component foundations.
 - Prefer **OpenAPI + Orval**, including in monorepos. Hono RPC remains an alternative with a concrete justification.
-- Include **Bun, Portless, and mprocs** for simple local development. Prefer native configuration over custom launchers; mprocs is optional for a single process.
+- Include **Bun, Portless, and crew** for simple local development. Prefer native configuration over custom launchers; preserve working mprocs setups in existing projects and do not require a coordinator for a single process.
 - Define UI tools and quality criteria, **not a fixed aesthetic**. Each product determines its colors, typography, density, and visual direction.
 - Keep project preferences in **one skill** with selectively loaded references. Separate skills cover independently useful workflows rather than duplicating these defaults.
 - Use the username **cristianbgp** throughout.
@@ -32,8 +32,13 @@ skills/
 │       ├── react-and-data.md
 │       ├── testing.md
 │       └── local-development.md
-└── web-animation-performance/
-    └── SKILL.md
+├── web-animation-performance/
+│   └── SKILL.md
+└── crew/
+    ├── SKILL.md
+    └── references/
+        ├── configuration.md
+        └── troubleshooting.md
 ```
 
 `SKILL.md` contains the instructions and links to the references. No `agents/openai.yaml` is included: this package does not need Codex-specific display metadata. No runtime code, package.json, build, or npm publishing is required.
@@ -44,8 +49,11 @@ References are loaded by task: `web-ui.md` for UI, mobile browser behavior, and 
 
 - [cristianbgp-project-preferences](skills/cristianbgp-project-preferences/SKILL.md): preferred stack and engineering criteria, with references selected by task.
 - [web-animation-performance](skills/web-animation-performance/SKILL.md): design new web animations and diagnose existing performance problems through rendering evidence. Framework-independent and self-contained; no animation library is required.
+- [crew](skills/crew/SKILL.md): configure and troubleshoot local service workspaces with `@cristianbgp/crew`, including startup readiness, environment loading, log inspection, and verification. Does not cover crew source development or package releases.
 
 The animation skill is an independent, optional package for selected projects. Project preferences do not load it or require its installation. Installing or updating `cristianbgp-project-preferences` does not select the animation skill.
+
+The crew skill is also independent and optional. Project preferences state the preference for crew without loading or depending on this skill. Installing the skill does not install the crew executable.
 
 ## Publishing changes
 
@@ -93,6 +101,16 @@ bunx skills add cristianbgp/agent-skills --skill web-animation-performance --age
 
 Invoke it explicitly in Codex with `$web-animation-performance` when requesting animation work. Installation scope and automatic activation are separate: an agent may also select an installed skill based on its description. This portable package does not configure an agent-specific explicit-only policy.
 
+### Optional crew skill: project installation
+
+From a project where you want help configuring or troubleshooting crew:
+
+```bash
+bunx skills add cristianbgp/agent-skills --skill crew --agent codex
+```
+
+This installs instructions for the agent, not `@cristianbgp/crew`. The executable and each service's dependencies are managed separately through the project's normal tooling. Omit `--global` to keep the skill installation scoped to the selected project.
+
 ## Use
 
 Project preferences:
@@ -107,7 +125,15 @@ Animation diagnosis:
 
 > Use web-animation-performance to investigate why this drawer stutters with a long list. Separate suspected causes from measured evidence and verify any fix under comparable conditions.
 
-In Codex, explicitly invoke the corresponding skill with `$cristianbgp-project-preferences` or `$web-animation-performance`. Each skill works independently.
+crew configuration:
+
+> Use crew to inspect this project's existing development scripts and prepare crew.toml for the web app, API, and worker. Preserve service commands and add only necessary startup dependencies.
+
+crew diagnosis:
+
+> Use crew to investigate why the worker is blocked at startup. Check readiness and environment loading without exposing secrets or changing crew's source.
+
+In Codex, explicitly invoke the corresponding skill with `$cristianbgp-project-preferences`, `$web-animation-performance`, or `$crew`. Each skill works independently.
 
 ## Maintain and update
 
@@ -123,11 +149,19 @@ For the animation skill, run the following from a project where it is installed:
 bunx skills update web-animation-performance --project
 ```
 
-Neither targeted update command selects the other skill. Keep edits in this repository; installed copies are managed by the CLI. When moving a manually copied installation to CLI management, back it up outside skill discovery directories and reconcile local changes first.
+For the crew skill, run from a project where it is installed:
+
+```bash
+bunx skills update crew --project
+```
+
+Each targeted update selects only the named skill. Keep edits in this repository; installed copies are managed by the CLI. When moving a manually copied installation to CLI management, back it up outside skill discovery directories and reconcile local changes first.
 
 Validate changes with representative scenarios: a simple static site should not acquire an API/database; an existing Radix app should not be migrated automatically; an offline-first mobile app should not inherit the entire web stack. Format validation alone does not establish good agent behavior.
 
 For animation, check both a new interaction and an existing performance problem. Include a case without browser access to verify that the agent reports uncertainty rather than inventing measurements. The animation skill has passed format and CLI discovery checks; behavioral evaluation on a real project is pending.
+
+For crew, check new configuration, a readiness failure, and an environment mismatch. Include a noninteractive environment to verify that the agent does not invent headless controls or claim a successful service startup from static checks. Configuration examples can be checked without launching services; that does not establish real terminal behavior. Agent behavioral evaluation on a consumer project is pending.
 
 No repository, commit, push, or production changes are authorized by the skill itself.
 
